@@ -1,0 +1,49 @@
+FROM ubuntu:20.04 AS oqs-builder
+
+ENV TZ=UTC
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
+RUN echo $TZ > /etc/timezone
+
+# Install OQS dependencies
+RUN apt-get update && apt-get install -y \
+    astyle \
+    cmake \
+    gcc \
+    ninja-build \
+    libssl-dev \
+    python3-pytest \
+    python3-pytest-xdist \
+    unzip \
+    xsltproc \
+    doxygen \
+    graphviz \
+    python3-yaml \
+    valgrind \
+    python3-pip \
+    build-essential \
+    git
+
+
+RUN git config --global user.name "nicksdigital"
+RUN git config --global user.email "nicknailers69@gmail.com"
+# Clone and build liboqs
+RUN git clone --recurse-submodules https://github.com/open-quantum-safe/liboqs.git
+WORKDIR /liboqs
+RUN mkdir build && cd build && \
+    cmake -GNinja -DCMAKE_INSTALL_PREFIX=/usr/local .. && \
+    ninja && \
+    ninja install
+
+# Build and install python-oqs
+WORKDIR /
+RUN git clone https://github.com/open-quantum-safe/liboqs-python
+WORKDIR /liboqs-python
+RUN python3 setup.py build && \
+    python3 setup.py install
+
+FROM python:3.11-slim as final
+
+# Copy OQS libraries from builder
+COPY --from=oqs-builder /usr/local /usr/local
+
+# Rest of your Dockerfile contents...

@@ -1,0 +1,68 @@
+# config.yaml
+server:
+  host: 0.0.0.0
+  port: 8000
+  workers: 4
+  backlog: 2048
+  debug: true
+
+vector:
+  dimensions: 8
+  precision: 6
+  batch_size: 100
+  storage_path: "data/vectors"
+  quantum:
+    encoding: "standard"
+    qubits: 8
+    error_correction: true
+
+security:
+  ssl_enabled: true
+  ssl_keyfile: "certs/private.key"
+  ssl_certfile: "certs/cert.pem"
+  ssl_ca_certs: "certs/ca.pem"
+  jwt_secret: "your-secret-key-here"  # Change this in production
+  jwt_algorithm: "HS256"
+  jwt_expiry: 3600
+
+consensus:
+  threshold: 0.67
+  min_nodes: 3
+  timeout: 30
+  batch_size: 100
+
+performance:
+  max_connections: 10000
+  keep_alive: 5
+  cache_ttl: 300
+  max_cache_size: 1000
+  connection_timeout: 30
+
+monitoring:
+  prometheus_enabled: true
+  prometheus_port: 8001
+  metrics_path: "/metrics"
+  collect_default_metrics: true
+
+logging:
+  level: "INFO"
+  json_format: true
+  file_path: "logs/app.log"
+  max_size: 10485760
+  backup_count: 5
+
+nodes:
+  heartbeat_interval: 10
+  cleanup_interval: 60
+  inactive_threshold: 300
+
+vault:
+  addr: "http://vault:8200"
+  mount_point: "axiomverse"
+  token_path: "/run/secrets/vault_token"
+
+nats:
+  url: "nats://nats:4222"
+  auth_token_path: "/run/secrets/nats_token"
+  cluster_name: "axiomverse"
+  client_id: "axiomverse-api"

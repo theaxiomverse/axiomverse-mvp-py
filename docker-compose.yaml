@@ -1,0 +1,184 @@
+# docker-compose.yaml
+
+services:
+  oqs-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.oqs
+    image: oqs-builder
+  vault:
+    image: hashicorp/vault:1.18.1  # Latest stable Vault
+    container_name: axiomverse-vault
+    cap_add:
+      - IPC_LOCK
+    environment:
+      - VAULT_ADDR=http://0.0.0.0:8200
+      - VAULT_API_ADDR=http://0.0.0.0:8200
+    volumes:
+      - ./certs:/vault/certs:rw
+      - ./vault/config:/vault/config:rw
+      - ./vault/logs:/vault/logs:rw
+      - ./vault/file:/vault/file:rw
+      - vault-data:/vault/data:rw,z
+    ports:
+      - "8200:8200"
+    command: [ "vault", "server", "-dev", "-dev-root-token-id=${VAULT_DEV_ROOT_TOKEN_ID}" ]
+    configs:
+      - source: vault_config
+        target: /vault/config/vault.json
+    restart: unless-stopped
+    networks:
+      - axiomverse-network2
+    healthcheck:
+      test: ["CMD", "vault", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+      args:
+        - BUILD_ENV=production
+        - PYTHON_VERSION=3.12  # Latest stable Python
+    container_name: axiomverse-api
+    environment:
+      - VAULT_ADDR=http://vault:8200
+      - VAULT_TOKEN_FILE=/run/secrets/vault_token
+      - API_PORT=8000
+      - LOG_LEVEL=INFO
+      - WORKERS=4
+      - CONFIG_FILE=/app/config.yaml
+      - TZ=UTC
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app:rw,z
+      - ./modules:/app/modules:rw,z
+      - ./certs:/app/certs:rw,z
+      - ./vendor:/app/vendor:rw,z
+      - ./logs:/app/logs:rw,z
+    secrets:
+      - vault_token
+      - geo_license
+    depends_on:
+      - prometheus
+      - vault
+    networks:
+      - axiomverse-network2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  prometheus:
+    image: prom/prometheus:v2.49.1  # Latest stable Prometheus
+    container_name: axiomverse-prometheus
+    volumes:
+      - ./prometheus:/etc/prometheus:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.enable-lifecycle'
+    ports:
+      - "9090:9090"
+    networks:
+      - axiomverse-network2
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  grafana:
+    image: grafana/grafana:10.3.3  # Latest stable Grafana
+    container_name: axiomverse-grafana
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:rw
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    ports:
+      - "3000:3000"
+    networks:
+      - axiomverse-network2
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  redis:
+    image: redis:7.2.4-alpine  # Latest stable Redis
+    container_name: axiomverse-redis
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - axiomverse-network2
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  vault-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+  nats-data:
+    driver: local
+  redis-data:
+    driver: local
+
+configs:
+  vault_config:
+    file: ./vault/config/vault.json
+  nats_config:
+    file: ./nats/config/nats.conf
+
+secrets:
+  vault_token:
+    file: ./secrets/vault_token.txt
+  geo_license:
+    file: ./secrets/geo_license.txt
+
+networks:
+  axiomverse-network2:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.0/24
+          gateway: 10.0.0.1

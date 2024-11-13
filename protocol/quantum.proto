@@ -1,0 +1,92 @@
+// proto/quantum.proto
+syntax = "proto3";
+
+package quantum;
+
+option go_package = "github.com/genovatix/axiomverse/proto";
+
+service QuantumNode {
+    // Vector Operations
+    rpc CreateVector(CreateVectorRequest) returns (VectorResponse) {}
+    rpc VerifyVector(VerifyVectorRequest) returns (VerificationResponse) {}
+    rpc GenerateProof(ProofRequest) returns (ProofResponse) {}
+
+    // Quantum Operations
+    rpc ProcessQuantumOperation(QuantumOperationRequest) returns (QuantumOperationResponse) {}
+
+    // Streaming Vector Updates
+    rpc SubscribeToVectorUpdates(VectorFilter) returns (stream VectorUpdate) {}
+}
+
+message Vector {
+    string id = 1;
+    repeated double coordinates = 2;
+    map<string, string> metadata = 3;
+    QuantumState quantum_state = 4;
+    bytes proof = 5;
+    string node_id = 6;
+    int64 timestamp = 7;
+}
+
+message QuantumState {
+    bytes state_data = 1;
+    string encoding = 2;
+    map<string, double> parameters = 3;
+}
+
+message CreateVectorRequest {
+    repeated double coordinates = 1;
+    map<string, string> metadata = 2;
+    string node_id = 3;
+}
+
+message VectorResponse {
+    string vector_id = 1;
+    QuantumState quantum_state = 2;
+    bytes proof = 3;
+    string status = 4;
+}
+
+message VerifyVectorRequest {
+    string vector_id = 1;
+    bytes proof = 2;
+}
+
+message VerificationResponse {
+    bool valid = 1;
+    string message = 2;
+}
+
+message ProofRequest {
+    string vector_id = 1;
+}
+
+message ProofResponse {
+    bytes proof = 1;
+    QuantumState quantum_state = 2;
+}
+
+message QuantumOperationRequest {
+    string operation = 1;
+    map<string, bytes> parameters = 2;
+    repeated string vector_ids = 3;
+}
+
+message QuantumOperationResponse {
+    bytes result = 1;
+    string status = 2;
+    map<string, bytes> additional_data = 3;
+}
+
+message VectorFilter {
+    repeated string vector_ids = 1;
+    repeated string node_ids = 2;
+    int64 since_timestamp = 3;
+}
+
+message VectorUpdate {
+    string update_type = 1;
+    Vector vector = 2;
+    bytes proof = 3;
+    int64 timestamp = 4;
+}
