@@ -36,8 +36,8 @@ opentelemetry-sdk==1.28.1
 opentelemetry-instrumentation-fastapi==0.49b1
 
 # Testing
-pytest==8.0.0
-pytest-asyncio==0.23.5
+pytest~=8.3.3
+pytest-asyncio~=0.24.0
 pytest-cov==4.1.0
 hypothesis==6.96.1
 faker==22.6.0
@@ -62,7 +62,7 @@ alembic==1.13.1
 # Utilities
 aiofiles==23.2.1
 python-dateutil==2.8.2
-pytz==2024.1
+pytz~=2024.2
 requests==2.32.3
 aiohttp==3.10.2
 blake3==0.4.1
@@ -73,8 +73,8 @@ mkdocs-material==9.5.7
 pdoc3==0.10.0
 
 # Quantum-related
-qiskit==1.0.2
-pennylane==0.39.0
+qiskit~=1.2.4
+pennylane==0.38.1
 
 # NATS and Messaging
 nats-py==2.9.0
@@ -95,3 +95,50 @@ joblib~=1.4.2
 scipy~=1.14.1
 python-jose[cryptography]==3.3.0  # JWT handling
 falcon==3.1.3                     # Fast API support
+
+pydantic~=2.9.2
+numba~=0.60.0
+qiskit-aer~=0.15.1
+psutil~=6.1.0
+aioipfs~=0.7.1
+kyber~=0.1.0
+grpcio~=1.67.1
+google~=3.0.0
+protobuf~=5.28.2
+pillow~=11.0.0
+pip~=24.3.1
+attrs~=24.2.0
+wheel~=0.44.0
+filelock~=3.16.1
+rich~=13.9.2
+keras~=3.6.0
+colorama~=0.4.6
+nose2~=0.15.1
+llvmlite~=0.43.0
+cffi~=1.17.1
+importlib_metadata~=8.5.0
+importlib-metadata~=6.11.0
+Pygments~=2.18.0
+coverage~=7.6.4
+charset-normalizer~=3.4.0
+lz4~=4.3.3
+memory-profiler~=0.61.0
+pandas~=2.2.3
+fsspec~=2024.9.0
+matplotlib~=3.9.2
+MarkupSafe~=3.0.1
+typing_extensions~=4.12.2
+pluggy~=1.5.0
+Deprecated~=1.2.14
+iniconfig~=2.0.0
+py-cpuinfo~=9.0.0
+seaborn~=0.13.2
+cycler~=0.12.1
+six~=1.16.0
+contourpy~=1.3.1
+fonttools~=4.54.1
+packaging~=24.1
+pyparsing~=3.2.0
+kiwisolver~=1.4.7
+pytest-benchmark~=5.1.0
+tqdm~=4.66.5

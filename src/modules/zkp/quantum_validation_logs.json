@@ -1,0 +1,4 @@
+{"timestamp": "2024-11-13T21:30:23.672858", "layer": 1, "num_qubits": 4, "trace_check": {"timestamp": "2024-11-13T21:44:55.804689", "layer": 1, "num_qubits": 4, "trace_check": true, "eigenvalue_range": "Pass", "purity": 0.9999999999999996, "entropy": -1.442691956759448e-10, "sparsity_ratio": 0.984375}
+{"timestamp": "2024-11-13T21:44:55.804950", "layer": 2, "num_qubits": 4, "trace_check": true, "eigenvalue_range": "Pass", "purity": 0.9999999999999996, "entropy": -1.442691956759448e-10, "sparsity_ratio": 0.984375}
+{"timestamp": "2024-11-13T21:44:55.804999", "layer": 3, "num_qubits": 4, "trace_check": true, "eigenvalue_range": "Pass", "purity": 0.9999999999999996, "entropy": -1.442691956759448e-10, "sparsity_ratio": 0.984375}
+{"timestamp": "2024-11-13T21:44:55.805126", "layer": 4, "num_qubits": 4, "trace_check": true, "eigenvalue_range": "Pass", "purity": 0.9999999999999996, "entropy": -1.442691956759448e-10, "sparsity_ratio": 0.984375}

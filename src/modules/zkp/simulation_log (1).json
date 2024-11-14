@@ -1,0 +1,124 @@
+Pass: ContainsInstruction - 0.00596 (ms)
+Pass: InverseCancellation - 0.10014 (ms)
+Pass: UnitarySynthesis - 0.00286 (ms)
+Pass: HighLevelSynthesis - 0.19884 (ms)
+Pass: BasisTranslator - 0.07415 (ms)
+Pass: Depth - 0.03791 (ms)
+Pass: FixedPoint - 0.00596 (ms)
+Pass: Size - 0.01287 (ms)
+Pass: FixedPoint - 0.00310 (ms)
+Pass: Optimize1qGatesDecomposition - 0.20814 (ms)
+Pass: InverseCancellation - 0.06604 (ms)
+Pass: GatesInBasis - 0.06294 (ms)
+Pass: Depth - 0.02885 (ms)
+Pass: FixedPoint - 0.00310 (ms)
+Pass: Size - 0.01216 (ms)
+Pass: FixedPoint - 0.00191 (ms)
+Pass: ContainsInstruction - 0.00286 (ms)
+Total Transpile Time - 46.20004 (ms)
+Error computing partial trace for layer 1: too many subscripts in einsum
+Traceback (most recent call last):
+  File "/Volumes/PROJECTS/axiomverse-mvp/modules/zkp/qiskitsim.py", line 132, in <module>
+    reduced_dm = partial_trace(zk_density_matrix, trace_out)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/states/utils.py", line 73, in partial_trace
+    ret = state.evolve(tr_op, [qargs[0]])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/states/densitymatrix.py", line 337, in evolve
+    return other._evolve(self, qargs=qargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/operators/channel/superop.py", line 290, in _evolve
+    tensor = Operator._einsum_matmul(tensor, mat, indices)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/operators/operator.py", line 725, in _einsum_matmul
+    return np.einsum(tensor, indices_tensor, mat, indices_mat)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/numpy/core/einsumfunc.py", line 1371, in einsum
+    return c_einsum(*operands, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: too many subscripts in einsum
+Error computing partial trace for layer 2: too many subscripts in einsum
+Traceback (most recent call last):
+  File "/Volumes/PROJECTS/axiomverse-mvp/modules/zkp/qiskitsim.py", line 132, in <module>
+    reduced_dm = partial_trace(zk_density_matrix, trace_out)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/states/utils.py", line 73, in partial_trace
+    ret = state.evolve(tr_op, [qargs[0]])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/states/densitymatrix.py", line 337, in evolve
+    return other._evolve(self, qargs=qargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/operators/channel/superop.py", line 290, in _evolve
+    tensor = Operator._einsum_matmul(tensor, mat, indices)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/operators/operator.py", line 725, in _einsum_matmul
+    return np.einsum(tensor, indices_tensor, mat, indices_mat)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/numpy/core/einsumfunc.py", line 1371, in einsum
+    return c_einsum(*operands, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: too many subscripts in einsum
+Error computing partial trace for layer 3: too many subscripts in einsum
+Traceback (most recent call last):
+  File "/Volumes/PROJECTS/axiomverse-mvp/modules/zkp/qiskitsim.py", line 132, in <module>
+    reduced_dm = partial_trace(zk_density_matrix, trace_out)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/states/utils.py", line 73, in partial_trace
+    ret = state.evolve(tr_op, [qargs[0]])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/states/densitymatrix.py", line 337, in evolve
+    return other._evolve(self, qargs=qargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/operators/channel/superop.py", line 290, in _evolve
+    tensor = Operator._einsum_matmul(tensor, mat, indices)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/operators/operator.py", line 725, in _einsum_matmul
+    return np.einsum(tensor, indices_tensor, mat, indices_mat)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/numpy/core/einsumfunc.py", line 1371, in einsum
+    return c_einsum(*operands, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: too many subscripts in einsum
+Error computing partial trace for layer 4: too many subscripts in einsum
+Traceback (most recent call last):
+  File "/Volumes/PROJECTS/axiomverse-mvp/modules/zkp/qiskitsim.py", line 132, in <module>
+    reduced_dm = partial_trace(zk_density_matrix, trace_out)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/states/utils.py", line 73, in partial_trace
+    ret = state.evolve(tr_op, [qargs[0]])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/states/densitymatrix.py", line 337, in evolve
+    return other._evolve(self, qargs=qargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/operators/channel/superop.py", line 290, in _evolve
+    tensor = Operator._einsum_matmul(tensor, mat, indices)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/qiskit/quantum_info/operators/operator.py", line 725, in _einsum_matmul
+    return np.einsum(tensor, indices_tensor, mat, indices_mat)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/PROJECTS/axiomverse-mvp/venv/lib/python3.12/site-packages/numpy/core/einsumfunc.py", line 1371, in einsum
+    return c_einsum(*operands, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: too many subscripts in einsum
+Density matrix for layer 1 is None, skipping validation.
+Density matrix for layer 2 is None, skipping validation.
+Density matrix for layer 3 is None, skipping validation.
+Density matrix for layer 4 is None, skipping validation.
+Pass: ContainsInstruction - 0.00501 (ms)
+Pass: InverseCancellation - 0.09990 (ms)
+Pass: UnitarySynthesis - 0.00310 (ms)
+Pass: HighLevelSynthesis - 0.23675 (ms)
+Pass: BasisTranslator - 0.07606 (ms)
+Pass: Depth - 0.03815 (ms)
+Pass: FixedPoint - 0.00525 (ms)
+Pass: Size - 0.01311 (ms)
+Pass: FixedPoint - 0.00310 (ms)
+Pass: Optimize1qGatesDecomposition - 0.20719 (ms)
+Pass: InverseCancellation - 0.06127 (ms)
+Pass: GatesInBasis - 0.06318 (ms)
+Pass: Depth - 0.02909 (ms)
+Pass: FixedPoint - 0.00381 (ms)
+Pass: Size - 0.01192 (ms)
+Pass: FixedPoint - 0.00191 (ms)
+Pass: ContainsInstruction - 0.00310 (ms)
+Total Transpile Time - 98.62304 (ms)

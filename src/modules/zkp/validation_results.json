@@ -1,0 +1,38 @@
+[
+    {
+        "layer": 1,
+        "num_qubits": 4,
+        "trace_check": true,
+        "eigenvalue_range": "Pass",
+        "purity": 0.9999999999999996,
+        "entropy": -1.442691956759448e-10,
+        "sparsity_ratio": 0.984375
+    },
+    {
+        "layer": 2,
+        "num_qubits": 4,
+        "trace_check": true,
+        "eigenvalue_range": "Pass",
+        "purity": 0.9999999999999996,
+        "entropy": -1.442691956759448e-10,
+        "sparsity_ratio": 0.984375
+    },
+    {
+        "layer": 3,
+        "num_qubits": 4,
+        "trace_check": true,
+        "eigenvalue_range": "Pass",
+        "purity": 0.9999999999999996,
+        "entropy": -1.442691956759448e-10,
+        "sparsity_ratio": 0.984375
+    },
+    {
+        "layer": 4,
+        "num_qubits": 4,
+        "trace_check": true,
+        "eigenvalue_range": "Pass",
+        "purity": 0.9999999999999996,
+        "entropy": -1.442691956759448e-10,
+        "sparsity_ratio": 0.984375
+    }
+]

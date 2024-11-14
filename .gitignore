@@ -11,3 +11,12 @@ vault
 nats
 prometheus
 logs
+qzkp_benchmark
+venv*
+ux
+*.sh
+-e .idea/
+__pycache__/
+*.pyc
+*.pyo
+.env

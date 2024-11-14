@@ -1,0 +1,9 @@
+AXIOMVERSE COLORS
+
+/* CSS HEX */
+--maya-blue: #6bc4feff;
+--rich-black: #07101aff;
+--paynes-gray: #495d74ff;
+--magnolia: #edeffdff;
+--rich-black-2: #050e19ff;
+--oxford-blue: #0e1c2dff;
