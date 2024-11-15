@@ -8,8 +8,8 @@ import blake3
 import geoip2.database
 import numpy as np
 
-from zkp.quantum_zkp import QuantumZKP
-from axiomverse.crypto_module.key_management import KeyManagement
+from src.modules.zkp import QuantumZKP
+from src.modules.crypto_module.key_management import KeyManagement
 import logging
 
 logger = logging.getLogger(__name__)

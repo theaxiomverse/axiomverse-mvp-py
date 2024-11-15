@@ -2,10 +2,10 @@ import base64
 import json
 from abc import ABC, abstractmethod
 from typing import Dict
-from axiomverse.contract_module.contract_interface import ContractInterface, ContractTypeAlias
+from src.modules.contract_module.contract_interface import ContractInterface, ContractTypeAlias
 from kyber import Kyber512
-from axiomverse.crypto_module.hashing_interface import HashingInterface
-from axiomverse.crypto_module.blake3_hashing import Blake3Hashing
+from src.modules.crypto_module.hashing_interface import HashingInterface
+from src.modules.crypto_module.blake3_hashing import Blake3Hashing
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 import os

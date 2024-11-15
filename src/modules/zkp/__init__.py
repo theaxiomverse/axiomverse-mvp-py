@@ -1,5 +1,5 @@
 # modules/zkp/__init__.py
-from .quantum_zkp import QuantumZKP
+from src.modules.zkp.qzkp_2 import QuantumZKP
 
 
 __all__ = ['QuantumZKP']

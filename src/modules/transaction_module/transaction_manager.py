@@ -194,3 +194,6 @@ class TransactionManager:
         """Close the IPFS client connection."""
         await self.ipfs_client.close()
         logger.info("IPFS client connection closed.")
+
+    async def stop(self):
+        pass

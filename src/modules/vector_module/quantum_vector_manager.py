@@ -17,25 +17,44 @@ from ..multiverse.consensus.secure_consensus_layer import SecureConsensusLayer
 
 logger = logging.getLogger(__name__)
 
+
 class QuantumVectorManager:
-    def __init__(self, threshold: int = 3, num_shares: int = 5, dimension: int = 5, target_dim: int = 3, area: float = 100.0):
-        # Initialize a dictionary to store vectors by their IDs
-        self.vectors: Dict[str, TransactionVector] = {}
-        self.vss = VSS()  # Initialize VSS for secure secret sharing
-        self.threshold = threshold  # Minimum number of shares for reconstruction
-        self.num_shares = num_shares  # Total number of shares for each vector
+    def __init__(self, threshold: int = 3, num_shares: int = 5, dimension: int = 5, target_dim: int = 3,
+                 area: float = 100.0):
+        self.vectors = {}
+        self.vss = VSS()
+        self.threshold = threshold
+        self.num_shares = num_shares
         self.dimension = dimension
         self.target_dim = target_dim
         self.area = area
 
-        # Initialize components for each enhancement
         self.gauge_transformation = GaugeTransformation(dimension)
         self.projection = DimensionalProjection(dimension)
         self.entanglement_entropy = EntanglementEntropy()
         self.holographic_screen = HolographicScreen(area)
         self.secure_consensus = SecureConsensusLayer(dimension)
 
-        logger.info("QuantumVectorManager initialized with VSS, gauge transformations, and advanced features.")
+        logger.info("QuantumVectorManager initialized")
+
+    async def start(self):
+        """Start the vector manager."""
+        logger.info("Starting QuantumVectorManager")
+
+    async def stop(self):
+        """Stop the vector manager and cleanup resources."""
+        try:
+            # Cleanup vectors
+            self.vectors.clear()
+
+            # Cleanup VSS
+            if hasattr(self.vss, 'cleanup'):
+                await self.vss.cleanup()
+
+            logger.info("QuantumVectorManager stopped successfully")
+        except Exception as e:
+            logger.error(f"Error stopping QuantumVectorManager: {e}")
+            raise
 
     def create_vector(self, vector_id: str, coordinates: List[float]) -> TransactionVector | None:
         # Check for existing vector ID

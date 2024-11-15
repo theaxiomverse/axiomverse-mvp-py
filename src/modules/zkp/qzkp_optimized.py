@@ -6,7 +6,7 @@ import time
 import os
 import psutil
 from typing import Tuple, List, Dict, Optional, Any
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from oqs import Signature
 from joblib import Parallel, delayed
 from numba import njit, prange, cuda
@@ -72,30 +72,25 @@ def calculate_entropy(amplitudes: np.ndarray) -> float:
 
 @dataclass
 class QuantumStateVector:
-    __slots__ = ['coordinates', 'entanglement', 'coherence', 'state_type',
-                 'timestamp', '_cache', 'basis_coefficients_cache']
-
     coordinates: np.ndarray
-    entanglement: float = 0.0
-    coherence: float = 1.0
-    state_type: str = "SUPERPOSITION"
-    timestamp: float = 0.0
+    entanglement: float = field(default=0.0)
+    coherence: float = field(default=1.0)
+    state_type: str = field(default="SUPERPOSITION")
+    timestamp: float = field(default_factory=lambda: time.time())
+    _cache: Dict = field(default_factory=dict)
+    basis_coefficients_cache: Optional[np.ndarray] = field(default=None)
 
     def __post_init__(self):
-        self._cache = {}
-        self.basis_coefficients_cache = None
         if len(self.coordinates) > MAX_VECTOR_SIZE:
             warnings.warn(f"Vector size exceeds MAX_VECTOR_SIZE ({MAX_VECTOR_SIZE})")
 
     @lru_cache(maxsize=1024)
     def calculate_coherence(self) -> float:
-        """Cached coherence calculation."""
         if 'coherence' not in self._cache:
             self._cache['coherence'] = float(np.mean(np.abs(self.coordinates)))
         return self._cache['coherence']
 
     def serialize(self) -> bytes:
-        """Optimized serialization with caching."""
         if 'serialized' not in self._cache:
             data = {
                 "coordinates": self.coordinates.tolist(),
@@ -108,7 +103,6 @@ class QuantumStateVector:
         return self._cache['serialized'].encode('utf-8')
 
     def clear_cache(self):
-        """Clear cached values."""
         self._cache.clear()
         if hasattr(self.calculate_coherence, 'cache_clear'):
             self.calculate_coherence.cache_clear()
@@ -146,6 +140,8 @@ class ResultCache:
             if oldest_key in self.cache:
                 del self.cache[oldest_key]
                 del self.access_times[oldest_key]
+
+
 
 
 class QuantumZKP:

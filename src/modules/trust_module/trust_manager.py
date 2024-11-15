@@ -1,4 +1,4 @@
-from axiomverse.trust_module.trust_manager_interface import TrustManagerInterface
+from src.modules.trust_module.trust_manager_interface import TrustManagerInterface
 from typing import Dict
 import math
 import logging
