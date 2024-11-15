@@ -21,3 +21,4 @@ __pycache__/
 *.pyo
 .env
 .idea
+/src/account_store.db
