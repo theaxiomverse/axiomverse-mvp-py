@@ -197,3 +197,6 @@ class TransactionManager:
 
     async def stop(self):
         pass
+
+    async def start(self):
+        pass

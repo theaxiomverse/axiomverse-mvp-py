@@ -1,3 +1,7 @@
+from typing import Any, Tuple, Dict, Coroutine
+
+from numpy import ndarray, dtype
+
 from src.modules.account_module.account_manager_interface import AccountManagerInterface
 from src.modules.crypto_module.key_management import KeyManagement
 from src.modules.trust_module.trust_manager import TrustManager
@@ -30,14 +34,14 @@ class AccountManager(AccountManagerInterface):
             self._store = shelve.open("account_store", writeback=True)
         return self._store
 
-    async def create_account(self, account_id: str, address_id: str) -> None:
+    async def create_account(self, account_id: str, address_id: str) -> Coroutine[Any, Any, Any]:
         store = self._get_store()
         with self.lock:
             if account_id in store:
                 raise AccountExistsError(f"Account {account_id} already exists.")
 
             public_key, private_key = self.key_management.generate_keypair()
-            address = self.address_manager.generate_geohashed_address(address_id, "account")
+            address = await self.address_manager.generate_geohashed_address(address_id, "account")
 
             store[account_id] = {
                 "public_key": public_key,
@@ -46,6 +50,7 @@ class AccountManager(AccountManagerInterface):
                 "locked": True
             }
             store.sync()
+            return address
 
     def is_account_locked(self, account_id: str) -> bool:
         store = self._get_store()

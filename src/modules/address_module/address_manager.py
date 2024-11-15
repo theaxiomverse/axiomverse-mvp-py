@@ -8,7 +8,7 @@ import blake3
 import geoip2.database
 import numpy as np
 
-from src.modules.zkp import QuantumZKP
+from qzkp import QuantumZKP
 from src.modules.crypto_module.key_management import KeyManagement
 import logging
 
@@ -22,7 +22,7 @@ class AddressManager:
         self.zkp = QuantumZKP(dimensions=8, security_level=128)  # ZKP for address validation
         logger.info("Initialized AddressManager")
 
-    def generate_geohashed_address(self, ip_address: str, purpose: str, return_data=False):
+    async def generate_geohashed_address(self, ip_address: str, purpose: str, return_data=False):
         """Generate an address with GeoIP information, ZKP for location verification, and purpose differentiation."""
         dir1 = os.path.join(dirname(__file__), 'vendor/GeoLite2-City.mmdb')
         try:
@@ -39,8 +39,8 @@ class AddressManager:
 
                 # Generate a ZKP witness for the location
                 identifier = f"geo_{ip_address}"
-                vector = np.array([response.location.latitude, response.location.longitude] + [0.0] * 6)
-                commitment, proof = self.zkp.prove_vector_knowledge(vector, identifier)
+                vector = [response.location.latitude, response.location.longitude] + [0.0] * 6
+                commitment, proof = await self.zkp.prove_vector_knowledge(vector, identifier)
 
                 # Convert `commitment` and `proof` to JSON serializable formats
                 commitment_serializable = commitment.hex()

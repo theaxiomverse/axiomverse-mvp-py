@@ -18,6 +18,7 @@ import queue
 import asyncio
 import warnings
 from collections import deque
+from qzkp import QuantumStateVector
 
 # Configure logging
 logging.basicConfig(level=logging.WARNING)
@@ -62,7 +63,7 @@ def adjust_to_square_length(vector: np.ndarray) -> np.ndarray:
     return vector
 
 
-@njit(fastmath=True)
+#@njit(fastmath=True)
 def calculate_entropy(amplitudes: np.ndarray) -> float:
     """Optimized entropy calculation using Numba."""
     probabilities = np.abs(amplitudes) ** 2
@@ -70,43 +71,28 @@ def calculate_entropy(amplitudes: np.ndarray) -> float:
     return -np.sum(probabilities * log_probs)
 
 
+'''
 @dataclass
 class QuantumStateVector:
     coordinates: np.ndarray
-    entanglement: float = field(default=0.0)
-    coherence: float = field(default=1.0)
-    state_type: str = field(default="SUPERPOSITION")
-    timestamp: float = field(default_factory=lambda: time.time())
-    _cache: Dict = field(default_factory=dict)
-    basis_coefficients_cache: Optional[np.ndarray] = field(default=None)
+    phase: np.ndarray
+    entanglement: float
+    coherence: float
+    state_type: str
+    timestamp: float
+    basis_coefficients_cache: Optional[List[complex]] = field(default=None)
 
-    def __post_init__(self):
-        if len(self.coordinates) > MAX_VECTOR_SIZE:
-            warnings.warn(f"Vector size exceeds MAX_VECTOR_SIZE ({MAX_VECTOR_SIZE})")
-
-    @lru_cache(maxsize=1024)
-    def calculate_coherence(self) -> float:
-        if 'coherence' not in self._cache:
-            self._cache['coherence'] = float(np.mean(np.abs(self.coordinates)))
-        return self._cache['coherence']
-
-    def serialize(self) -> bytes:
-        if 'serialized' not in self._cache:
-            data = {
-                "coordinates": self.coordinates.tolist(),
-                "entanglement": self.entanglement,
-                "coherence": self.coherence,
-                "state_type": self.state_type,
-                "timestamp": self.timestamp
-            }
-            self._cache['serialized'] = json.dumps(data, separators=(',', ':'))
-        return self._cache['serialized'].encode('utf-8')
-
-    def clear_cache(self):
-        self._cache.clear()
-        if hasattr(self.calculate_coherence, 'cache_clear'):
-            self.calculate_coherence.cache_clear()
-
+    def __init__(self, state_vector: np.ndarray):
+        if len(state_vector) == 0:
+            raise ValueError("State vector must not be empty.")
+        self.coordinates = state_vector
+        self.phase = np.random.uniform(0, 2 * np.pi, len(state_vector))
+        self.entanglement = 0.0
+        self.coherence = 1.0
+        self.state_type = "SUPERPOSITION"
+        self.timestamp = time.time()
+        logger.debug(f"Initialized QuantumStateVector: {self}")
+'''
 
 class ResultCache:
     """Thread-safe cache for computation results."""
@@ -219,10 +205,9 @@ class QuantumZKP:
         hasher.clear()
         return commitment
 
-    async def prove_vector_knowledge(self, vector: np.ndarray, identifier: str) -> Tuple[bytes, Dict]:
+    async def prove_vector_knowledge(self, vector: np.array, identifier: str) -> Tuple[bytes, Dict]:
         """Asynchronous proof generation."""
-        # Normalize vector
-        vector = vector / np.linalg.norm(vector)
+
 
         # Create quantum state
         state = QuantumStateVector(vector)
@@ -242,7 +227,7 @@ class QuantumZKP:
         # Create proof
         proof = {
             'quantum_dimensions': self.dimensions,
-            'basis_coefficients': state.coordinates.tolist(),
+            'basis_coefficients': state.coordinates,
             'measurements': measurements,
             'state_metadata': {
                 'coherence': state.coherence,
@@ -262,30 +247,6 @@ class QuantumZKP:
         proof['signature'] = signature.hex()
 
         return commitment, proof
-
-    async def prove_vector_knowledge_batch(
-            self,
-            vectors: List[np.ndarray],
-            identifiers: List[str],
-            batch_size: int = DEFAULT_BATCH_SIZE
-    ) -> List[Tuple[bytes, Dict]]:
-        """Asynchronous batch proof generation."""
-        results = []
-
-        async def process_batch(batch_vectors, batch_ids):
-            tasks = []
-            for vector, id_ in zip(batch_vectors, batch_ids):
-                tasks.append(self.prove_vector_knowledge(vector, id_))
-            return await asyncio.gather(*tasks)
-
-        # Process in batches
-        for i in range(0, len(vectors), batch_size):
-            batch_vectors = vectors[i:i + batch_size]
-            batch_ids = identifiers[i:i + batch_size]
-            batch_results = await process_batch(batch_vectors, batch_ids)
-            results.extend(batch_results)
-
-        return results
 
     def verify_proof(self, commitment: bytes, proof: Dict, identifier: str) -> bool:
         """Verify a single proof."""

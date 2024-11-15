@@ -27,28 +27,26 @@ class AxiomChain:
         self.identity: Optional[NodeIdentity] = None
 
     async def initialize_node(self, ip_address: str) -> NodeIdentity:
-        """Initialize node with account and address."""
-        try:
-            # Generate account ID
-            account_id = self._generate_account_id()
+        # Generate account ID
+        account_id = await self._generate_account_id()
 
+        try:
             # Create account
             await self.account_manager.create_account(account_id, ip_address)
 
             # Generate address for this node
-            address = self.address_manager.generate_geohashed_address(ip_address, "node")
+            address = await self.address_manager.generate_geohashed_address(ip_address, "node")
 
             # Store identity
             self.identity = NodeIdentity(account_id, address)
             logger.info(f"Node initialized with account {account_id} and address {address}")
 
             return self.identity
-
         except Exception as e:
             logger.error(f"Failed to initialize node: {e}")
             raise
 
-    def _generate_account_id(self) -> str:
+    async def _generate_account_id(self) -> str:
         """Generate unique account ID for node."""
         seed = f"node_{time.time()}"
         return self.hasher.hash(seed.encode(), "node_account")
@@ -81,7 +79,7 @@ class AxiomChain:
         try:
             # Create genesis vector in latent layer
             genesis_coordinates = [0.0] * self.vector_manager.dimension
-            genesis_vector = await self.vector_manager.create_vector(
+            genesis_vector = self.vector_manager.create_vector(
                 vector_id="genesis",
                 coordinates=genesis_coordinates
             )
@@ -96,7 +94,7 @@ class AxiomChain:
             }
 
             # Move vector to transaction layer
-            await self.vector_manager.secure_layer_data(genesis_vector.id)
+            self.vector_manager.secure_layer_data(genesis_vector.id)
 
             # Process genesis transaction
             await self.transaction_manager.create_transaction(genesis_tx)
